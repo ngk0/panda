@@ -1,7 +1,7 @@
 #include "safety_chrysler_common.h"
 
 const SteeringLimits CHRYSLER_CUSW_STEERING_LIMITS = {
-  .max_steer = 300,
+  .max_steer = 261,
   .max_rt_delta = 150,
   .max_rt_interval = 250000,
   .max_rate_up = 4,
@@ -19,6 +19,7 @@ typedef struct {
   const int CRUISE_BUTTONS;
   const int DAS_6;
   const int ACC_CONTROL;
+  const int STARTSTOP_COMMAND;
 } ChryslerCuswAddrs;
 
 // CAN messages for Chrysler Compact US Wide platforms
@@ -31,12 +32,14 @@ const ChryslerCuswAddrs CHRYSLER_CUSW_ADDRS = {
   .CRUISE_BUTTONS   = 0x2FA,
   .DAS_6            = 0x5DC,
   .ACC_CONTROL      = 0x2EC,
+  .STARTSTOP_COMMAND      = 0x7CC,
 };
 
 const CanMsg CHRYSLER_CUSW_TX_MSGS[] = {
   {CHRYSLER_CUSW_ADDRS.CRUISE_BUTTONS, 0, 3},
   {CHRYSLER_CUSW_ADDRS.LKAS_COMMAND, 0, 4},
   {CHRYSLER_CUSW_ADDRS.DAS_6, 0, 4},
+  {CHRYSLER_CUSW_ADDRS.STARTSTOP_COMMAND, 0, 4},
 };
 
 RxCheck chrysler_cusw_rx_checks[] = {
@@ -90,6 +93,8 @@ static void chrysler_cusw_rx_hook(const CANPacket_t *to_push) {
   }
 
   generic_rx_checks((bus == 0) && (addr == chrysler_cusw_addrs->LKAS_COMMAND));
+  
+  generic_rx_checks((bus == 0) && (addr == chrysler_cusw_addrs->STARTSTOP_COMMAND));
 }
 
 static bool chrysler_cusw_tx_hook(const CANPacket_t *to_send) {
