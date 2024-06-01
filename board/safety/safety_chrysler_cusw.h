@@ -20,7 +20,7 @@ typedef struct {
   const int CRUISE_BUTTONS;
   const int DAS_6;
   const int ACC_CONTROL;
-  const int STARTSTOP_COMMAND;
+  const int ENGINE_STARTSTOP;
 } ChryslerCuswAddrs;
 
 // CAN messages for Chrysler Compact US Wide platforms
@@ -33,14 +33,14 @@ const ChryslerCuswAddrs CHRYSLER_CUSW_ADDRS = {
   .CRUISE_BUTTONS   = 0x2FA,
   .DAS_6            = 0x5DC,
   .ACC_CONTROL      = 0x2EC,
-  .STARTSTOP_COMMAND      = 0x7CC,
+  .ENGINE_STARTSTOP      = 0x7CC,
 };
 
 const CanMsg CHRYSLER_CUSW_TX_MSGS[] = {
   {CHRYSLER_CUSW_ADDRS.CRUISE_BUTTONS, 0, 3},
   {CHRYSLER_CUSW_ADDRS.LKAS_COMMAND, 0, 4},
   {CHRYSLER_CUSW_ADDRS.DAS_6, 0, 4},
-  {CHRYSLER_CUSW_ADDRS.STARTSTOP_COMMAND, 0, 4},
+  {CHRYSLER_CUSW_ADDRS.ENGINE_STARTSTOP, 0, 4},
 };
 
 RxCheck chrysler_cusw_rx_checks[] = {
@@ -50,6 +50,7 @@ RxCheck chrysler_cusw_rx_checks[] = {
   {.msg = {{CHRYSLER_CUSW_ADDRS.ACCEL_GAS, 0, 5, .check_checksum = true, .max_counter = 15U, .frequency = 50U}, { 0 }, { 0 }}},
   {.msg = {{CHRYSLER_CUSW_ADDRS.ACC_CONTROL, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 50U}, { 0 }, { 0 }}},
   {.msg = {{CHRYSLER_CUSW_ADDRS.CRUISE_BUTTONS, 0, 3, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
+  {.msg = {{CHRYSLER_CUSW_ADDRS.ENGINE_STARTSTOP, 0, 3, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
 };
 
 const ChryslerCuswAddrs *chrysler_cusw_addrs = &CHRYSLER_CUSW_ADDRS;
