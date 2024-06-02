@@ -40,7 +40,7 @@ const CanMsg CHRYSLER_CUSW_TX_MSGS[] = {
   {CHRYSLER_CUSW_ADDRS.CRUISE_BUTTONS, 0, 3},
   {CHRYSLER_CUSW_ADDRS.LKAS_COMMAND, 0, 4},
   {CHRYSLER_CUSW_ADDRS.DAS_6, 0, 4},
-  {CHRYSLER_CUSW_ADDRS.ENGINE_STARTSTOP, 0, 4},
+  {CHRYSLER_CUSW_ADDRS.ENGINE_STARTSTOP, 0, 2},
 };
 
 RxCheck chrysler_cusw_rx_checks[] = {
@@ -49,8 +49,7 @@ RxCheck chrysler_cusw_rx_checks[] = {
   {.msg = {{CHRYSLER_CUSW_ADDRS.EPS_STATUS, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 100U}, { 0 }, { 0 }}},
   {.msg = {{CHRYSLER_CUSW_ADDRS.ACCEL_GAS, 0, 5, .check_checksum = true, .max_counter = 15U, .frequency = 50U}, { 0 }, { 0 }}},
   {.msg = {{CHRYSLER_CUSW_ADDRS.ACC_CONTROL, 0, 8, .check_checksum = true, .max_counter = 15U, .frequency = 50U}, { 0 }, { 0 }}},
-  {.msg = {{CHRYSLER_CUSW_ADDRS.CRUISE_BUTTONS, 0, 3, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
-  {.msg = {{CHRYSLER_CUSW_ADDRS.ENGINE_STARTSTOP, 0, 3, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
+  //{.msg = {{CHRYSLER_CUSW_ADDRS.CRUISE_BUTTONS, 0, 3, .check_checksum = false, .max_counter = 0U, .frequency = 50U}, { 0 }, { 0 }}},
 };
 
 const ChryslerCuswAddrs *chrysler_cusw_addrs = &CHRYSLER_CUSW_ADDRS;
@@ -111,6 +110,12 @@ static bool chrysler_cusw_tx_hook(const CANPacket_t *to_send) {
     // Signal: LKAS_COMMAND.LKAS_CONTROL_BIT
     const bool steer_req = GET_BIT(to_send, 12U);
     if (steer_torque_cmd_checks(desired_torque, steer_req, CHRYSLER_CUSW_STEERING_LIMITS)) {
+      tx = false;
+    }
+    
+        // Signal: ENGINE_STARTSTOP
+    const bool steer_req = GET_BIT(to_send, 10U);
+    if (false) {
       tx = false;
     }
   }
