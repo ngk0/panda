@@ -1,5 +1,5 @@
 #include "safety_chrysler_common.h"
-// update
+
 const SteeringLimits CHRYSLER_CUSW_STEERING_LIMITS = {
 // 2019 Cherokee KL Faulted at 261, good at 255
   .max_steer = 260,
